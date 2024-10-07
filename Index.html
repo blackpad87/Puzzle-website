@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #puzzle-result {
+            margin-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generator Word Search Sederhana</h1>
+    <form id="puzzle-form">
+        <label for="words">Masukkan Kata (Pisahkan dengan koma):</label>
+        <input type="text" id="words" name="words" required>
+        <button type="submit">Buat Puzzle</button>
+    </form>
+
+    <div id="puzzle-result"></div>
+
+    <script>
+        document.getElementById('puzzle-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const words = document.getElementById('words').value.split(',');
+            const gridSize = 10;
+            const puzzle = generateWordSearch(words, gridSize);
+            displayPuzzle(puzzle);
+        });
+
+        function generateWordSearch(words, size) {
+            const grid = Array(size).fill().map(() => Array(size).fill(' '));
+            words.forEach(word => {
+                let x = Math.floor(Math.random() * size);
+                let y = Math.floor(Math.random() * size);
+                for (let i = 0; i < word.length; i++) {
+                    if (x + i < size) {
+                        grid[x + i][y] = word[i].toUpperCase();
+                    }
+                }
+            });
+            return grid;
+        }
+
+        function displayPuzzle(puzzle) {
+            let resultDiv = document.getElementById('puzzle-result');
+            resultDiv.innerHTML = '';
+
+            let table = document.createElement('table');
+            puzzle.forEach(row => {
+                let tr = document.createElement('tr');
+                row.forEach(cell => {
+                    let td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+
+            resultDiv.appendChild(table);
+        }
+    </script>
+</body>
+</html>￼Enter
